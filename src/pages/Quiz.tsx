@@ -60,6 +60,32 @@ const questions = [
             { value: 'tempo', label: '⏰ Falta de tempo' },
         ],
     },
+    {
+        id: 6,
+        question: 'Você tem medo de estourar o orçamento ou esquecer itens importantes?',
+        options: [
+            { value: 'sim_muito', label: '😱 Sim, morro de medo!' },
+            { value: 'um_pouco', label: '😟 Um pouco' },
+            { value: 'nao', label: '😌 Não, sou organizado(a)' },
+        ],
+    },
+    {
+        id: 7,
+        question: 'Se existisse um "mapa" pronto que fizesse 80% do trabalho chato por você, você usaria?',
+        options: [
+            { value: 'com_certeza', label: '🤩 Com certeza!' },
+            { value: 'talvez', label: '🤔 Talvez' },
+            { value: 'nao', label: '🙅 Não' },
+        ],
+    },
+    {
+        id: 8,
+        question: 'Você está comprometido(a) em fazer dessa a melhor festa da sua vida?',
+        options: [
+            { value: 'sim_incrivel', label: '🚀 Sim, vai ser incrível!' },
+            { value: 'simples', label: '✨ Quero apenas algo simples' },
+        ],
+    },
 ];
 
 export default function Quiz() {
@@ -120,6 +146,9 @@ export default function Quiz() {
                 expected_guests: answers[2] || null,
                 budget_range: answers[3] || null,
                 main_challenge: answers[4] || null,
+                fear_budget_items: answers[5] || null,
+                desire_roadmap: answers[6] || null,
+                commitment_level: answers[7] || null,
             };
 
             // Try to insert the new record
