@@ -112,20 +112,23 @@ export default function Quiz() {
         try {
             const supabase = (await import('@/lib/supabase')).supabase;
 
-            const { data, error } = await supabase
+            const quizData = {
+                email,
+                name,
+                party_type: answers[0] || null,
+                party_date: answers[1] || null,
+                expected_guests: answers[2] || null,
+                budget_range: answers[3] || null,
+                main_challenge: answers[4] || null,
+            };
+
+            // First try to delete existing record to avoid unique constraint issues
+            await supabase.from('quiz_leads').delete().eq('email', email);
+
+            // Then insert the new record
+            const { error } = await supabase
                 .from('quiz_leads')
-                .upsert(
-                    {
-                        email,
-                        name,
-                        party_type: answers[0],
-                        party_date: answers[1],
-                        expected_guests: answers[2],
-                        budget_range: answers[3],
-                        main_challenge: answers[4],
-                    },
-                    { onConflict: 'email' }
-                );
+                .insert([quizData]);
 
             if (error) {
                 console.error('Erro ao salvar lead:', error);
