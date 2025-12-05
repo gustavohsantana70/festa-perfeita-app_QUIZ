@@ -18,18 +18,23 @@ CREATE INDEX IF NOT EXISTS idx_quiz_leads_email ON quiz_leads(email);
 -- Enable RLS (Row Level Security)
 ALTER TABLE quiz_leads ENABLE ROW LEVEL SECURITY;
 
--- Create policy to allow anyone to insert (public quiz)
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Allow public inserts" ON quiz_leads;
+DROP POLICY IF EXISTS "Allow users to read own records" ON quiz_leads;
+DROP POLICY IF EXISTS "Allow users to update own records" ON quiz_leads;
+
+-- Create policy to allow anyone to insert (public quiz - no auth required)
 CREATE POLICY "Allow public inserts" ON quiz_leads
   FOR INSERT
   WITH CHECK (true);
 
--- Create policy to allow anyone to read their own record
-CREATE POLICY "Allow users to read own records" ON quiz_leads
+-- Create policy to allow anyone to read records
+CREATE POLICY "Allow public select" ON quiz_leads
   FOR SELECT
   USING (true);
 
--- Create policy to allow users to update their own records
-CREATE POLICY "Allow users to update own records" ON quiz_leads
+-- Create policy to allow anyone to update records
+CREATE POLICY "Allow public updates" ON quiz_leads
   FOR UPDATE
   USING (true)
   WITH CHECK (true);
