@@ -137,8 +137,13 @@ export default function Quiz() {
                 return;
             }
 
-            toast.success('Quiz concluído com sucesso!');
-            setShowResult(true);
+            toast.success('Quiz concluído com sucesso! Redirecionando...');
+
+            // Redirect to Kiwify checkout
+            setTimeout(() => {
+                window.location.href = 'https://pay.kiwify.com.br/Cn4U3SU';
+            }, 1500);
+
             setLoading(false);
         } catch (error) {
             console.error('Erro ao processar:', error);
