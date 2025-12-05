@@ -102,36 +102,43 @@ export default function Quiz() {
             return;
         }
 
+        if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            toast.error('Por favor, insira um email válido');
+            return;
+        }
+
         setLoading(true);
 
         try {
-            const { supabase } = await import('@/lib/supabase');
+            const supabase = (await import('@/lib/supabase')).supabase;
 
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('quiz_leads')
-                .upsert({
-                    email,
-                    name,
-                    party_type: answers[0],
-                    party_date: answers[1],
-                    expected_guests: answers[2],
-                    budget_range: answers[3],
-                    main_challenge: answers[4],
-                }, {
-                    onConflict: 'email'
-                });
+                .upsert(
+                    {
+                        email,
+                        name,
+                        party_type: answers[0],
+                        party_date: answers[1],
+                        expected_guests: answers[2],
+                        budget_range: answers[3],
+                        main_challenge: answers[4],
+                    },
+                    { onConflict: 'email' }
+                );
 
             if (error) {
                 console.error('Erro ao salvar lead:', error);
-                toast.error('Erro ao processar. Tente novamente.');
+                toast.error(`Erro: ${error.message || 'Tente novamente.'}`);
                 setLoading(false);
                 return;
             }
 
+            toast.success('Quiz concluído com sucesso!');
             setShowResult(true);
             setLoading(false);
         } catch (error) {
-            console.error('Erro:', error);
+            console.error('Erro ao processar:', error);
             toast.error('Erro ao processar. Tente novamente.');
             setLoading(false);
         }
