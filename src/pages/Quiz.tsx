@@ -122,19 +122,21 @@ export default function Quiz() {
                 main_challenge: answers[4] || null,
             };
 
-            // First try to delete existing record to avoid unique constraint issues
-            await supabase.from('quiz_leads').delete().eq('email', email);
-
-            // Then insert the new record
+            // Try to insert the new record
             const { error } = await supabase
                 .from('quiz_leads')
                 .insert([quizData]);
 
             if (error) {
-                console.error('Erro ao salvar lead:', error);
-                toast.error(`Erro: ${error.message || 'Tente novamente.'}`);
-                setLoading(false);
-                return;
+                // Ignore duplicate email error (code 23505) and proceed
+                if (error.code === '23505' || error.message?.includes('duplicate key')) {
+                    console.log('Email already exists, proceeding to redirect');
+                } else {
+                    console.error('Erro ao salvar lead:', error);
+                    toast.error(`Erro: ${error.message || 'Tente novamente.'}`);
+                    setLoading(false);
+                    return;
+                }
             }
 
             toast.success('Quiz concluído com sucesso! Redirecionando...');
