@@ -71,7 +71,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             "p-2 rounded-lg",
             theme.gradient
           )}>
-            <PartyPopper className="w-5 h-5 text-primary-foreground" />
+            <theme.icon className="w-5 h-5 text-primary-foreground" />
           </div>
           <span className="font-display font-bold">Festa Perfeita</span>
         </div>
@@ -101,7 +101,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 "p-2 rounded-lg",
                 theme.gradient
               )}>
-                <PartyPopper className="w-6 h-6 text-primary-foreground" />
+                <theme.icon className="w-6 h-6 text-primary-foreground" />
               </div>
               <span className="font-display text-lg font-bold">Festa Perfeita</span>
             </div>
