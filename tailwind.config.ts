@@ -142,4 +142,13 @@ export default {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  safelist: [
+    {
+      pattern: /(text|bg|border)-(christmas|reveillon|birthday|wedding|graduation|baby|kitchen|generic|gold|success|warning)/,
+      variants: ['hover', 'focus'],
+    },
+    {
+      pattern: /(text|bg|border)-(christmas|reveillon|birthday|wedding|graduation|baby|kitchen|generic|gold|success|warning)\/(10|20|90)/,
+    },
+  ],
 } satisfies Config;

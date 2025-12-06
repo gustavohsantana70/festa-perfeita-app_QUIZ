@@ -21,7 +21,7 @@ export const PARTY_OPTIONS = [
     { value: 'outro', label: '🎉 Outro' },
 ] as const;
 
-export const getPartyTheme = (type: PartyType = 'outro') => {
+export const getPartyTheme = (type: PartyType = 'natal') => {
     switch (type) {
         case 'natal':
             return {
@@ -99,12 +99,12 @@ export const getPartyTheme = (type: PartyType = 'outro') => {
     }
 };
 
-export const getPartyColorClass = (type: PartyType = 'outro') => {
+export const getPartyColorClass = (type: PartyType = 'natal') => {
     const theme = getPartyTheme(type);
     return `text-${theme.color}`;
 };
 
-export const getPartyBgClass = (type: PartyType = 'outro') => {
+export const getPartyBgClass = (type: PartyType = 'natal') => {
     const theme = getPartyTheme(type);
     return `bg-${theme.color}/10`;
 };
