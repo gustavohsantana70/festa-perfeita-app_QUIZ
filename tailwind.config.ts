@@ -61,6 +61,36 @@ export default {
           light: "hsl(var(--reveillon-blue-light))",
           dark: "hsl(var(--reveillon-blue-dark))",
         },
+        birthday: {
+          DEFAULT: "hsl(var(--birthday-pink))",
+          light: "hsl(var(--birthday-pink-light))",
+          dark: "hsl(var(--birthday-pink-dark))",
+        },
+        wedding: {
+          DEFAULT: "hsl(var(--wedding-silver))",
+          light: "hsl(var(--wedding-silver-light))",
+          dark: "hsl(var(--wedding-silver-dark))",
+        },
+        graduation: {
+          DEFAULT: "hsl(var(--graduation-blue))",
+          light: "hsl(var(--graduation-blue-light))",
+          dark: "hsl(var(--graduation-blue-dark))",
+        },
+        baby: {
+          DEFAULT: "hsl(var(--baby-pastel))",
+          light: "hsl(var(--baby-pastel-light))",
+          dark: "hsl(var(--baby-pastel-dark))",
+        },
+        kitchen: {
+          DEFAULT: "hsl(var(--kitchen-red))",
+          light: "hsl(var(--kitchen-red-light))",
+          dark: "hsl(var(--kitchen-red-dark))",
+        },
+        generic: {
+          DEFAULT: "hsl(var(--generic-purple))",
+          light: "hsl(var(--generic-purple-light))",
+          dark: "hsl(var(--generic-purple-dark))",
+        },
         gold: {
           DEFAULT: "hsl(var(--gold))",
           light: "hsl(var(--gold-light))",

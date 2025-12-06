@@ -23,6 +23,8 @@ import { useStore, PartyType } from '@/lib/store';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
+import { getPartyTheme, PARTY_OPTIONS } from '@/lib/theme';
+
 const steps = [
   { id: 1, title: 'Tipo de Festa', icon: PartyPopper },
   { id: 2, title: 'Data', icon: Calendar },
@@ -30,80 +32,18 @@ const steps = [
   { id: 4, title: 'Orçamento', icon: Wallet },
 ];
 
-const partyTypes = [
-  {
-    id: 'natal' as PartyType,
-    name: 'Natal',
-    icon: TreePine,
-    emoji: '🎄',
-    date: '25 de Dezembro',
-    description: 'Celebre com família e amigos em uma festa natalina cheia de magia',
-    color: 'christmas'
-  },
-  {
-    id: 'reveillon' as PartyType,
-    name: 'Réveillon',
-    icon: Sparkles,
-    emoji: '🎆',
-    date: '31 de Dezembro',
-    description: 'Comece o ano novo com uma festa inesquecível',
-    color: 'reveillon'
-  },
-  {
-    id: 'aniversario' as PartyType,
-    name: 'Aniversário',
-    icon: Cake,
-    emoji: '🎂',
-    date: '',
-    description: 'Celebre mais um ano de vida com uma festa especial',
-    color: 'primary'
-  },
-  {
-    id: 'casamento' as PartyType,
-    name: 'Casamento',
-    icon: Heart,
-    emoji: '💍',
-    date: '',
-    description: 'O dia mais especial merece uma festa perfeita',
-    color: 'secondary'
-  },
-  {
-    id: 'formatura' as PartyType,
-    name: 'Formatura',
-    icon: GraduationCap,
-    emoji: '🎓',
-    date: '',
-    description: 'Celebre a conquista com amigos e família',
-    color: 'accent'
-  },
-  {
-    id: 'cha_bebe' as PartyType,
-    name: 'Chá de Bebê',
-    icon: Baby,
-    emoji: '👶',
-    date: '',
-    description: 'Receba o novo membro da família com carinho',
-    color: 'primary'
-  },
-  {
-    id: 'cha_panela' as PartyType,
-    name: 'Chá de Panela',
-    icon: UtensilsCrossed,
-    emoji: '🍳',
-    date: '',
-    description: 'Prepare-se para a nova vida a dois',
-    color: 'secondary'
-  },
-  {
-    id: 'outro' as PartyType,
-    name: 'Outro',
-    icon: Star,
-    emoji: '⭐',
-    date: '',
-    description: 'Qualquer celebração especial',
-    color: 'accent'
-  },
-];
+const partyTypes = PARTY_OPTIONS.map(option => {
+  const theme = getPartyTheme(option.value as PartyType);
+  return {
+    id: option.value as PartyType,
+    name: theme.label,
+    icon: theme.icon,
+    emoji: theme.emoji,
+    date: option.value === 'natal' ? '25 de Dezembro' : option.value === 'reveillon' ? '31 de Dezembro' : '',
+    description: theme.description,
+    color: theme.color
+  };
+});
 
 export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(1);

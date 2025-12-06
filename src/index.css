@@ -58,6 +58,39 @@
     --gradient-christmas: linear-gradient(135deg, hsl(var(--christmas-red)) 0%, hsl(var(--christmas-red-dark)) 100%);
     --gradient-reveillon: linear-gradient(135deg, hsl(var(--reveillon-blue)) 0%, hsl(var(--reveillon-blue-dark)) 100%);
     --gradient-gold: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%);
+    
+    /* New Party Colors */
+    --birthday-pink: 330 81% 60%;
+    --birthday-pink-light: 330 81% 70%;
+    --birthday-pink-dark: 330 81% 50%;
+    
+    --wedding-silver: 220 14% 75%;
+    --wedding-silver-light: 220 14% 85%;
+    --wedding-silver-dark: 220 14% 65%;
+    
+    --graduation-blue: 230 85% 60%;
+    --graduation-blue-light: 230 85% 70%;
+    --graduation-blue-dark: 230 85% 50%;
+    
+    --baby-pastel: 190 70% 70%;
+    --baby-pastel-light: 190 70% 80%;
+    --baby-pastel-dark: 190 70% 60%;
+    
+    --kitchen-red: 0 80% 65%;
+    --kitchen-red-light: 0 80% 75%;
+    --kitchen-red-dark: 0 80% 55%;
+    
+    --generic-purple: 270 70% 60%;
+    --generic-purple-light: 270 70% 70%;
+    --generic-purple-dark: 270 70% 50%;
+
+    /* New Gradients */
+    --gradient-birthday: linear-gradient(135deg, hsl(var(--birthday-pink)) 0%, hsl(var(--birthday-pink-dark)) 100%);
+    --gradient-wedding: linear-gradient(135deg, hsl(var(--wedding-silver)) 0%, hsl(var(--wedding-silver-dark)) 100%);
+    --gradient-graduation: linear-gradient(135deg, hsl(var(--graduation-blue)) 0%, hsl(var(--graduation-blue-dark)) 100%);
+    --gradient-baby: linear-gradient(135deg, hsl(var(--baby-pastel)) 0%, hsl(var(--baby-pastel-dark)) 100%);
+    --gradient-kitchen: linear-gradient(135deg, hsl(var(--kitchen-red)) 0%, hsl(var(--kitchen-red-dark)) 100%);
+    --gradient-generic: linear-gradient(135deg, hsl(var(--generic-purple)) 0%, hsl(var(--generic-purple-dark)) 100%);
 
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.05);

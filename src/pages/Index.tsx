@@ -39,7 +39,7 @@ export default function Index() {
           </div>
           <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             Sua <span className="text-gradient-festive">Festa Perfeita</span><br />
-            de Natal ou Réveillon
+            para qualquer ocasião
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
             Organize convidados, compras e orçamento com ajuda de IA. Sem stress, só celebração! 🎉

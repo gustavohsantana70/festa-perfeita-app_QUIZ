@@ -1,12 +1,12 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  ShoppingCart, 
-  Wallet, 
-  Sparkles, 
-  MessageCircle, 
+import {
+  LayoutDashboard,
+  Users,
+  ShoppingCart,
+  Wallet,
+  Sparkles,
+  MessageCircle,
   FileText,
   Settings,
   LogOut,
@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { useStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
 import { PremiumPopup } from '@/components/PremiumPopup';
+import { getPartyTheme } from '@/lib/theme';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -40,6 +41,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, showPremiumPopup, setShowPremiumPopup } = useStore();
+  const theme = getPartyTheme(user?.partyType);
 
   useEffect(() => {
     // Show premium popup after 30 seconds
@@ -54,8 +56,6 @@ export function AppLayout({ children }: AppLayoutProps) {
     navigate('/login');
   };
 
-  const partyTypeColor = user?.partyType === 'natal' ? 'christmas' : 'reveillon';
-
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile header */}
@@ -69,7 +69,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div className="flex items-center gap-2">
           <div className={cn(
             "p-2 rounded-lg",
-            partyTypeColor === 'christmas' ? 'gradient-christmas' : 'gradient-reveillon'
+            theme.gradient
           )}>
             <PartyPopper className="w-5 h-5 text-primary-foreground" />
           </div>
@@ -99,7 +99,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             <div className="flex items-center gap-3">
               <div className={cn(
                 "p-2 rounded-lg",
-                partyTypeColor === 'christmas' ? 'gradient-christmas' : 'gradient-reveillon'
+                theme.gradient
               )}>
                 <PartyPopper className="w-6 h-6 text-primary-foreground" />
               </div>
@@ -120,11 +120,9 @@ export function AppLayout({ children }: AppLayoutProps) {
             {user?.partyType && (
               <span className={cn(
                 "inline-flex items-center gap-1 mt-2 text-xs font-medium px-2 py-1 rounded-full",
-                user.partyType === 'natal' 
-                  ? 'bg-christmas/10 text-christmas' 
-                  : 'bg-reveillon/10 text-reveillon'
+                `bg-${theme.color}/10 text-${theme.color}`
               )}>
-                {user.partyType === 'natal' ? '🎄 Natal' : '🎆 Réveillon'}
+                {theme.emoji} {theme.label}
               </span>
             )}
           </div>
@@ -141,9 +139,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                   className={cn(
                     "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
                     isActive
-                      ? partyTypeColor === 'christmas'
-                        ? "bg-christmas text-primary-foreground shadow-glow"
-                        : "bg-reveillon text-secondary-foreground shadow-glow-blue"
+                      ? `bg-${theme.color} text-primary-foreground shadow-glow`
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
@@ -190,9 +186,9 @@ export function AppLayout({ children }: AppLayoutProps) {
       </main>
 
       {/* Premium popup */}
-      <PremiumPopup 
-        open={showPremiumPopup} 
-        onClose={() => setShowPremiumPopup(false)} 
+      <PremiumPopup
+        open={showPremiumPopup}
+        onClose={() => setShowPremiumPopup(false)}
       />
     </div>
   );

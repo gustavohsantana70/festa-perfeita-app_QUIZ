@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { 
-  Plus, 
-  Search, 
-  UserCheck, 
-  UserX, 
-  Trash2, 
+import {
+  Plus,
+  Search,
+  UserCheck,
+  UserX,
+  Trash2,
   Edit2,
   Users,
   Mail,
@@ -27,6 +27,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
+import { getPartyTheme } from '@/lib/theme';
 
 export default function Guests() {
   const { user, guests, addGuest, updateGuest, removeGuest } = useStore();
@@ -40,7 +41,7 @@ export default function Guests() {
     plusOne: false,
   });
 
-  const partyTypeColor = user?.partyType === 'natal' ? 'christmas' : 'reveillon';
+  const theme = getPartyTheme(user?.partyType);
 
   const filteredGuests = guests.filter(guest =>
     guest.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -106,8 +107,8 @@ export default function Guests() {
               Gerencie a lista de convidados da sua festa
             </p>
           </div>
-          <Button 
-            variant={partyTypeColor === 'christmas' ? 'christmas' : 'reveillon'}
+          <Button
+            className={cn(`bg-${theme.color} hover:bg-${theme.color}/90 text-primary-foreground`)}
             onClick={() => handleOpenDialog()}
           >
             <Plus className="w-4 h-4" />
@@ -121,11 +122,11 @@ export default function Guests() {
             <CardContent className="p-4 flex items-center gap-4">
               <div className={cn(
                 "p-3 rounded-xl",
-                partyTypeColor === 'christmas' ? "bg-christmas/10" : "bg-reveillon/10"
+                `bg-${theme.color}/10`
               )}>
                 <Users className={cn(
                   "w-6 h-6",
-                  partyTypeColor === 'christmas' ? "text-christmas" : "text-reveillon"
+                  `text-${theme.color}`
                 )} />
               </div>
               <div>
@@ -310,7 +311,7 @@ export default function Guests() {
                 <Checkbox
                   id="plusOne"
                   checked={formData.plusOne}
-                  onCheckedChange={(checked) => 
+                  onCheckedChange={(checked) =>
                     setFormData({ ...formData, plusOne: checked as boolean })
                   }
                 />

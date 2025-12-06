@@ -21,7 +21,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
             Festa Perfeita
           </h1>
           <p className="text-xl text-center opacity-90 max-w-md">
-            Planeje sua festa de Natal ou Réveillon em poucos minutos, sem stress!
+            Planeje sua festa perfeita em poucos minutos, sem stress!
           </p>
           <div className="mt-12 flex gap-4">
             <Sparkles className="w-8 h-8 animate-sparkle" />

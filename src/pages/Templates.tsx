@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { 
+import {
   Sparkles,
   UtensilsCrossed,
   Palette,
@@ -18,31 +18,31 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
 const templateTypes = [
-  { 
-    type: 'cardapio', 
-    label: 'Cardápio', 
-    icon: UtensilsCrossed, 
+  {
+    type: 'cardapio',
+    label: 'Cardápio',
+    icon: UtensilsCrossed,
     color: 'text-orange-500 bg-orange-500/10',
     description: 'Sugestões de pratos e bebidas',
   },
-  { 
-    type: 'decoracao', 
-    label: 'Decoração', 
-    icon: Palette, 
+  {
+    type: 'decoracao',
+    label: 'Decoração',
+    icon: Palette,
     color: 'text-pink-500 bg-pink-500/10',
     description: 'Ideias criativas de decoração',
   },
-  { 
-    type: 'playlist', 
-    label: 'Playlist & Atividades', 
-    icon: Music, 
+  {
+    type: 'playlist',
+    label: 'Playlist & Atividades',
+    icon: Music,
     color: 'text-purple-500 bg-purple-500/10',
     description: 'Músicas e brincadeiras',
   },
-  { 
-    type: 'checklist', 
-    label: 'Checklist Final', 
-    icon: CheckSquare, 
+  {
+    type: 'checklist',
+    label: 'Checklist Final',
+    icon: CheckSquare,
     color: 'text-green-500 bg-green-500/10',
     description: 'Lista de verificação completa',
   },
@@ -251,7 +251,81 @@ const templateContents: Record<string, Record<string, string>> = {
 - [ ] Preparar câmera para fotos
 - [ ] Curtir muito! 🎉`,
   },
+  generic: {
+    cardapio: `# 🍽️ Cardápio da Festa
+
+## Entrada
+- Salgadinhos variados
+- Tábua de frios
+- Patês e torradas
+
+## Prato Principal
+- Strogonoff de frango/carne
+- Arroz branco e batata palha
+- Salada verde
+- Massa com molho vermelho
+
+## Sobremesas
+- Bolo da festa
+- Docinhos variados (brigadeiro, beijinho)
+- Mousse de limão
+
+## Bebidas
+- Refrigerantes
+- Sucos naturais
+- Água
+- Cerveja/Drinks (opcional)`,
+
+    decoracao: `# 🎨 Decoração da Festa
+
+## Cores
+- Escolha uma paleta de 2-3 cores
+- Use balões para dar volume
+
+## Mesa do Bolo
+- Toalha bonita ou mesa rústica
+- Bolo centralizado
+- Docinhos em bandejas de alturas diferentes
+- Flores ou arranjos temáticos
+
+## Ambiente
+- Iluminação aconchegante
+- Cantinho para fotos (backdrop)
+- Música ambiente`,
+
+    playlist: `# 🎵 Playlist & Atividades
+
+## Músicas
+1. Músicas animadas para o início
+2. Hits do momento
+3. Músicas nostálgicas
+4. Eletrônica/Funk para a pista
+
+## Atividades
+- Pista de dança
+- Cabine de fotos
+- Livro de assinaturas/recados`,
+
+    checklist: `# ✅ Checklist Final
+
+## 1 Semana Antes
+- [ ] Confirmar convidados
+- [ ] Comprar descartáveis/decoração
+- [ ] Encomendar bolo/doces
+
+## 1 Dia Antes
+- [ ] Buscar encomendas
+- [ ] Gelar bebidas
+- [ ] Montar decoração básica
+
+## No Dia
+- [ ] Finalizar decoração
+- [ ] Receber fornecedores
+- [ ] Se arrumar e curtir!`,
+  }
 };
+
+import { getPartyTheme } from '@/lib/theme';
 
 export default function Templates() {
   const { user, templates, addTemplate, setShowPremiumPopup } = useStore();
@@ -259,15 +333,16 @@ export default function Templates() {
   const [generatedContent, setGeneratedContent] = useState<Record<string, string>>({});
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const partyType = user?.partyType || 'natal';
-  const partyTypeColor = partyType === 'natal' ? 'christmas' : 'reveillon';
+  const theme = getPartyTheme(user?.partyType);
+  const PartyIcon = theme.icon;
 
   const handleGenerate = async (type: string) => {
     setLoading(type);
 
     // Simulate AI generation - In production, this would call the AI API
     setTimeout(() => {
-      const content = templateContents[partyType]?.[type] || 'Conteúdo não disponível';
+      const partyType = user?.partyType || 'outro';
+      const content = templateContents[partyType]?.[type] || templateContents['generic']?.[type] || 'Conteúdo não disponível';
       setGeneratedContent(prev => ({ ...prev, [type]: content }));
       addTemplate({ type: type as any, content });
       toast.success('Template gerado com sucesso! ✨');
@@ -276,9 +351,9 @@ export default function Templates() {
   };
 
   const handleCopy = async (type: string) => {
-    const content = generatedContent[type];
-    if (content) {
-      await navigator.clipboard.writeText(content);
+    const generated = generatedContent[type];
+    if (generated) {
+      await navigator.clipboard.writeText(generated);
       setCopiedId(type);
       toast.success('Copiado para a área de transferência!');
       setTimeout(() => setCopiedId(null), 2000);
@@ -292,9 +367,9 @@ export default function Templates() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-3xl font-bold flex items-center gap-3">
-              <Sparkles className={cn(
+              <PartyIcon className={cn(
                 "w-8 h-8",
-                partyTypeColor === 'christmas' ? "text-christmas" : "text-reveillon"
+                `text-${theme.color}`
               )} />
               Templates IA
             </h1>
@@ -302,7 +377,7 @@ export default function Templates() {
               Gere conteúdo personalizado para sua festa com IA
             </p>
           </div>
-          <Button 
+          <Button
             variant="gold"
             onClick={() => setShowPremiumPopup(true)}
           >
@@ -359,8 +434,7 @@ export default function Templates() {
                           )}
                         </Button>
                         <Button
-                          variant={partyTypeColor === 'christmas' ? 'christmas' : 'reveillon'}
-                          className="flex-1"
+                          className={cn("flex-1", `bg-${theme.color} hover:bg-${theme.color}/90 text-primary-foreground`)}
                           onClick={() => handleGenerate(template.type)}
                           disabled={isLoading}
                         >
@@ -380,8 +454,7 @@ export default function Templates() {
                     </div>
                   ) : (
                     <Button
-                      variant={partyTypeColor === 'christmas' ? 'christmas' : 'reveillon'}
-                      className="w-full"
+                      className={cn("w-full", `bg-${theme.color} hover:bg-${theme.color}/90 text-primary-foreground`)}
                       onClick={() => handleGenerate(template.type)}
                       disabled={isLoading}
                     >

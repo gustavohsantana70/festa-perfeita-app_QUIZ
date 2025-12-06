@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { 
+import {
   Send,
   Bot,
   User,
@@ -14,6 +14,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { useStore, ChatMessage } from '@/lib/store';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { getPartyTheme } from '@/lib/theme';
 
 const suggestedQuestions = [
   "Quantas bebidas devo comprar para 20 pessoas?",
@@ -94,7 +95,8 @@ export default function Chat() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const partyTypeColor = user?.partyType === 'natal' ? 'christmas' : 'reveillon';
+  const theme = getPartyTheme(user?.partyType);
+  const PartyIcon = theme.icon;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -106,7 +108,7 @@ export default function Chat() {
 
   const getAIResponse = (message: string): string => {
     const lowerMessage = message.toLowerCase();
-    
+
     if (lowerMessage.includes('bebida') || lowerMessage.includes('beber')) {
       return aiResponses.bebidas;
     }
@@ -166,9 +168,9 @@ O que você gostaria de saber? 🎉`;
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="font-display text-3xl font-bold flex items-center gap-3">
-              <Sparkles className={cn(
+              <PartyIcon className={cn(
                 "w-8 h-8",
-                partyTypeColor === 'christmas' ? "text-christmas" : "text-reveillon"
+                `text-${theme.color}`
               )} />
               Chat IA
             </h1>
@@ -192,12 +194,12 @@ O que você gostaria de saber? 🎉`;
               <div className="h-full flex flex-col items-center justify-center text-center p-6">
                 <div className={cn(
                   "w-16 h-16 rounded-full flex items-center justify-center mb-4",
-                  partyTypeColor === 'christmas' ? "gradient-christmas" : "gradient-reveillon"
+                  theme.gradient
                 )}>
                   <Bot className="w-8 h-8 text-primary-foreground" />
                 </div>
                 <h3 className="font-display text-xl font-bold mb-2">
-                  Olá! Sou seu assistente de festas 🎉
+                  Olá! Sou seu assistente de festas {theme.emoji}
                 </h3>
                 <p className="text-muted-foreground mb-6 max-w-md">
                   Posso ajudar com dúvidas sobre quantidades, decoração, organização e muito mais!
@@ -227,11 +229,9 @@ O que você gostaria de saber? 🎉`;
                   >
                     <div className={cn(
                       "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-                      message.role === 'user' 
-                        ? "bg-muted" 
-                        : partyTypeColor === 'christmas' 
-                          ? "gradient-christmas" 
-                          : "gradient-reveillon"
+                      message.role === 'user'
+                        ? "bg-muted"
+                        : theme.gradient
                     )}>
                       {message.role === 'user' ? (
                         <User className="w-4 h-4 text-muted-foreground" />
@@ -250,8 +250,8 @@ O que você gostaria de saber? 🎉`;
                           // Handle markdown bold
                           const formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                           return (
-                            <p 
-                              key={i} 
+                            <p
+                              key={i}
                               className={cn("mb-1 last:mb-0", !line && "h-2")}
                               dangerouslySetInnerHTML={{ __html: formatted }}
                             />
@@ -265,7 +265,7 @@ O que você gostaria de saber? 🎉`;
                   <div className="flex gap-3">
                     <div className={cn(
                       "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
-                      partyTypeColor === 'christmas' ? "gradient-christmas" : "gradient-reveillon"
+                      theme.gradient
                     )}>
                       <Bot className="w-4 h-4 text-primary-foreground" />
                     </div>
@@ -295,7 +295,7 @@ O que você gostaria de saber? 🎉`;
                 className="flex-1"
               />
               <Button
-                variant={partyTypeColor === 'christmas' ? 'christmas' : 'reveillon'}
+                className={cn(`bg-${theme.color} hover:bg-${theme.color}/90 text-primary-foreground`)}
                 size="icon"
                 onClick={() => handleSend()}
                 disabled={!input.trim() || isTyping}

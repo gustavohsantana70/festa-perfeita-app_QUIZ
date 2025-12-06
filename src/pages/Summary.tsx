@@ -1,4 +1,4 @@
-import { 
+import {
   FileText,
   Users,
   ShoppingCart,
@@ -17,11 +17,12 @@ import { useStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Progress } from '@/components/ui/progress';
+import { getPartyTheme } from '@/lib/theme';
 
 export default function Summary() {
   const { user, guests, shoppingList, budgetCategories, templates } = useStore();
-
-  const partyTypeColor = user?.partyType === 'natal' ? 'christmas' : 'reveillon';
+  const theme = getPartyTheme(user?.partyType);
+  const PartyIcon = theme.icon;
 
   const confirmedGuests = guests.filter(g => g.confirmed).length;
   const purchasedItems = shoppingList.filter(i => i.purchased).length;
@@ -43,7 +44,7 @@ export default function Summary() {
     });
   };
 
-  const daysUntilParty = user?.partyDate 
+  const daysUntilParty = user?.partyDate
     ? Math.ceil((new Date(user.partyDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
     : null;
 
@@ -55,7 +56,7 @@ export default function Summary() {
   })();
 
   const handleShare = async () => {
-    const text = `🎉 Minha ${user?.partyType === 'natal' ? 'Festa de Natal' : 'Festa de Réveillon'}
+    const text = `🎉 Minha Festa de ${theme.label}
 📅 ${user?.partyDate ? formatDate(user.partyDate) : 'Data não definida'}
 👥 ${confirmedGuests} convidados confirmados
 🛒 ${purchasedItems}/${shoppingList.length} itens comprados
@@ -84,7 +85,7 @@ Organizado com o app Festa Perfeita! 🎊`;
             <h1 className="font-display text-3xl font-bold flex items-center gap-3">
               <FileText className={cn(
                 "w-8 h-8",
-                partyTypeColor === 'christmas' ? "text-christmas" : "text-reveillon"
+                `text-${theme.color}`
               )} />
               Resumo da Festa
             </h1>
@@ -107,17 +108,17 @@ Organizado com o app Festa Perfeita! 🎊`;
         {/* Party header card */}
         <Card className={cn(
           "border-0 overflow-hidden",
-          partyTypeColor === 'christmas' ? "gradient-christmas" : "gradient-reveillon"
+          theme.gradient
         )}>
           <CardContent className="p-8 text-primary-foreground">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="flex items-center gap-4">
                 <div className="p-4 bg-primary-foreground/20 rounded-2xl">
-                  <PartyPopper className="w-10 h-10" />
+                  <PartyIcon className="w-10 h-10" />
                 </div>
                 <div>
                   <h2 className="font-display text-3xl font-bold">
-                    {user?.partyType === 'natal' ? '🎄 Festa de Natal' : '🎆 Festa de Réveillon'}
+                    {theme.emoji} Festa de {theme.label}
                   </h2>
                   {user?.partyDate && (
                     <p className="text-lg opacity-90 capitalize">
@@ -175,9 +176,9 @@ Organizado com o app Festa Perfeita! 🎊`;
                     de {guests.length} confirmados
                   </p>
                 </div>
-                <Progress 
-                  value={guests.length > 0 ? (confirmedGuests / guests.length) * 100 : 0} 
-                  className="h-2" 
+                <Progress
+                  value={guests.length > 0 ? (confirmedGuests / guests.length) * 100 : 0}
+                  className="h-2"
                 />
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
@@ -208,9 +209,9 @@ Organizado com o app Festa Perfeita! 🎊`;
                     de {shoppingList.length} itens comprados
                   </p>
                 </div>
-                <Progress 
-                  value={shoppingList.length > 0 ? (purchasedItems / shoppingList.length) * 100 : 0} 
-                  className="h-2" 
+                <Progress
+                  value={shoppingList.length > 0 ? (purchasedItems / shoppingList.length) * 100 : 0}
+                  className="h-2"
                 />
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
@@ -241,12 +242,12 @@ Organizado com o app Festa Perfeita! 🎊`;
                     de {formatCurrency(user?.totalBudget || 0)}
                   </p>
                 </div>
-                <Progress 
-                  value={user?.totalBudget ? Math.min((totalSpent / user.totalBudget) * 100, 100) : 0} 
+                <Progress
+                  value={user?.totalBudget ? Math.min((totalSpent / user.totalBudget) * 100, 100) : 0}
                   className={cn(
                     "h-2",
                     totalSpent > (user?.totalBudget || 0) && "[&>div]:bg-destructive"
-                  )} 
+                  )}
                 />
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
@@ -278,9 +279,9 @@ Organizado com o app Festa Perfeita! 🎊`;
                 <div key={cat.category} className="flex items-center gap-4">
                   <div className="w-24 text-sm font-medium truncate">{cat.category}</div>
                   <div className="flex-1">
-                    <Progress 
-                      value={cat.planned > 0 ? Math.min((cat.spent / cat.planned) * 100, 100) : 0} 
-                      className="h-2" 
+                    <Progress
+                      value={cat.planned > 0 ? Math.min((cat.spent / cat.planned) * 100, 100) : 0}
+                      className="h-2"
                     />
                   </div>
                   <div className="w-32 text-right text-sm">
@@ -302,7 +303,7 @@ Organizado com o app Festa Perfeita! 🎊`;
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                 {guests.map(guest => (
-                  <div 
+                  <div
                     key={guest.id}
                     className={cn(
                       "flex items-center gap-2 px-3 py-2 rounded-lg",

@@ -6,19 +6,21 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
+import { getPartyTheme, PARTY_OPTIONS } from '@/lib/theme';
+import { PartyType } from '@/lib/store';
+
 const questions = [
     {
         id: 1,
         question: 'Qual celebração você está planejando?',
-        options: [
-            { value: 'natal', label: '🎄 Natal', emoji: '🎄' },
-            { value: 'reveillon', label: '🎆 Réveillon', emoji: '🎆' },
-            { value: 'aniversario', label: '🎂 Aniversário', emoji: '🎂' },
-            { value: 'casamento', label: '💍 Casamento', emoji: '💍' },
-            { value: 'formatura', label: '🎓 Formatura', emoji: '🎓' },
-            { value: 'cha_bebe', label: '👶 Chá de Bebê', emoji: '👶' },
-            { value: 'outro', label: '⭐ Outro', emoji: '⭐' },
-        ],
+        options: PARTY_OPTIONS.map(option => {
+            const theme = getPartyTheme(option.value as PartyType);
+            return {
+                value: option.value,
+                label: theme.label,
+                emoji: theme.emoji
+            };
+        }),
     },
     {
         id: 2,

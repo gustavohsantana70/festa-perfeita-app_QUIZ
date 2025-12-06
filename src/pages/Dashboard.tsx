@@ -1,13 +1,11 @@
 import { Link } from 'react-router-dom';
-import { 
-  Users, 
-  ShoppingCart, 
-  Wallet, 
+import {
+  Users,
+  ShoppingCart,
+  Wallet,
   CheckCircle2,
   ArrowRight,
   Calendar,
-  Sparkles,
-  MessageCircle,
   TrendingUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,24 +14,25 @@ import { Progress } from '@/components/ui/progress';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
+import { getPartyTheme } from '@/lib/theme';
 
 export default function Dashboard() {
   const { user, guests, shoppingList, budgetCategories } = useStore();
+  const theme = getPartyTheme(user?.partyType);
+  const PartyIcon = theme.icon;
 
   const confirmedGuests = guests.filter(g => g.confirmed).length;
   const totalGuests = guests.length;
-  
+
   const purchasedItems = shoppingList.filter(i => i.purchased).length;
   const totalItems = shoppingList.length;
-  
+
   const totalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent, 0);
   const budgetUsed = user?.totalBudget ? (totalSpent / user.totalBudget) * 100 : 0;
 
-  const daysUntilParty = user?.partyDate 
+  const daysUntilParty = user?.partyDate
     ? Math.ceil((new Date(user.partyDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
     : null;
-
-  const partyTypeColor = user?.partyType === 'natal' ? 'christmas' : 'reveillon';
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -71,16 +70,16 @@ export default function Dashboard() {
           {daysUntilParty !== null && daysUntilParty > 0 && (
             <div className={cn(
               "flex items-center gap-3 px-4 py-3 rounded-xl",
-              partyTypeColor === 'christmas' ? "bg-christmas/10" : "bg-reveillon/10"
+              `bg-${theme.color}/10`
             )}>
               <Calendar className={cn(
                 "w-5 h-5",
-                partyTypeColor === 'christmas' ? "text-christmas" : "text-reveillon"
+                `text-${theme.color}`
               )} />
               <div>
                 <p className={cn(
                   "font-bold text-lg",
-                  partyTypeColor === 'christmas' ? "text-christmas" : "text-reveillon"
+                  `text-${theme.color}`
                 )}>
                   {daysUntilParty} dias
                 </p>
@@ -94,13 +93,13 @@ export default function Dashboard() {
         {user?.partyDate && (
           <Card className={cn(
             "border-0 overflow-hidden",
-            partyTypeColor === 'christmas' ? "gradient-christmas" : "gradient-reveillon"
+            theme.gradient
           )}>
             <CardContent className="p-6 text-primary-foreground">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
                   <p className="text-sm opacity-80 mb-1">
-                    {user.partyType === 'natal' ? '🎄 Festa de Natal' : '🎆 Festa de Réveillon'}
+                    {theme.emoji} Festa de {theme.label}
                   </p>
                   <p className="font-display text-xl font-bold capitalize">
                     {formatDate(user.partyDate)}
@@ -148,11 +147,11 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between mb-4">
                   <div className={cn(
                     "p-3 rounded-xl",
-                    partyTypeColor === 'christmas' ? "bg-christmas/10" : "bg-reveillon/10"
+                    `bg-${theme.color}/10`
                   )}>
                     <Users className={cn(
                       "w-6 h-6",
-                      partyTypeColor === 'christmas' ? "text-christmas" : "text-reveillon"
+                      `text-${theme.color}`
                     )} />
                   </div>
                   <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
@@ -193,9 +192,9 @@ export default function Dashboard() {
                 <p className="text-sm text-muted-foreground">
                   de {formatCurrency(user?.totalBudget || 0)}
                 </p>
-                <Progress 
-                  value={Math.min(budgetUsed, 100)} 
-                  className={cn("h-2 mt-3", budgetUsed > 100 && "[&>div]:bg-destructive")} 
+                <Progress
+                  value={Math.min(budgetUsed, 100)}
+                  className={cn("h-2 mt-3", budgetUsed > 100 && "[&>div]:bg-destructive")}
                 />
               </CardContent>
             </Card>
@@ -206,7 +205,7 @@ export default function Dashboard() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-3 rounded-xl bg-secondary/20">
-                    <Sparkles className="w-6 h-6 text-secondary" />
+                    <PartyIcon className="w-6 h-6 text-secondary" />
                   </div>
                   <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                 </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { 
+import {
   Settings as SettingsIcon,
   User,
   Calendar,
@@ -33,6 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { getPartyTheme, PARTY_OPTIONS } from '@/lib/theme';
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export default function Settings() {
     totalBudget: user?.totalBudget?.toString() || '',
   });
 
-  const partyTypeColor = user?.partyType === 'natal' ? 'christmas' : 'reveillon';
+  const theme = getPartyTheme(user?.partyType);
 
   const handleSave = () => {
     updateUserProfile({
@@ -82,7 +83,7 @@ export default function Settings() {
           <h1 className="font-display text-3xl font-bold flex items-center gap-3">
             <SettingsIcon className={cn(
               "w-8 h-8",
-              partyTypeColor === 'christmas' ? "text-christmas" : "text-reveillon"
+              `text-${theme.color}`
             )} />
             Configurações
           </h1>
@@ -172,8 +173,11 @@ export default function Settings() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="natal">🎄 Natal</SelectItem>
-                    <SelectItem value="reveillon">🎆 Réveillon</SelectItem>
+                    {PARTY_OPTIONS.map(option => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -220,9 +224,8 @@ export default function Settings() {
 
         {/* Save button */}
         <Button
-          variant={partyTypeColor === 'christmas' ? 'christmas' : 'reveillon'}
+          className={cn("w-full", `bg-${theme.color} hover:bg-${theme.color}/90 text-primary-foreground`)}
           size="lg"
-          className="w-full"
           onClick={handleSave}
         >
           <Save className="w-4 h-4" />
@@ -260,8 +263,8 @@ export default function Settings() {
                   Esta ação não pode ser desfeita
                 </p>
               </div>
-              <Button 
-                variant="destructive" 
+              <Button
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
               >
                 <Trash2 className="w-4 h-4" />
@@ -291,8 +294,8 @@ export default function Settings() {
               >
                 Cancelar
               </Button>
-              <Button 
-                variant="destructive" 
+              <Button
+                variant="destructive"
                 className="flex-1"
                 onClick={handleDeleteAccount}
               >

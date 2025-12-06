@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { 
-  Plus, 
-  Search, 
+import {
+  Plus,
+  Search,
   ShoppingCart,
-  Trash2, 
+  Trash2,
   Edit2,
   Check,
   Wine,
@@ -35,6 +35,7 @@ import {
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
+import { getPartyTheme } from '@/lib/theme';
 
 const categories = [
   { value: 'bebidas', label: 'Bebidas', icon: Wine, color: 'text-purple-500 bg-purple-500/10' },
@@ -58,7 +59,7 @@ export default function ShoppingList() {
     estimatedPrice: 0,
   });
 
-  const partyTypeColor = user?.partyType === 'natal' ? 'christmas' : 'reveillon';
+  const theme = getPartyTheme(user?.partyType);
 
   const filteredItems = shoppingList.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
@@ -159,8 +160,8 @@ export default function ShoppingList() {
               Organize tudo que você precisa comprar
             </p>
           </div>
-          <Button 
-            variant={partyTypeColor === 'christmas' ? 'christmas' : 'reveillon'}
+          <Button
+            className={cn(`bg-${theme.color} hover:bg-${theme.color}/90 text-primary-foreground`)}
             onClick={() => handleOpenDialog()}
           >
             <Plus className="w-4 h-4" />
@@ -231,8 +232,8 @@ export default function ShoppingList() {
                 {search || filterCategory !== 'all' ? 'Nenhum item encontrado' : 'Lista vazia'}
               </h3>
               <p className="text-muted-foreground mb-4">
-                {search || filterCategory !== 'all' 
-                  ? 'Tente outra busca ou filtro' 
+                {search || filterCategory !== 'all'
+                  ? 'Tente outra busca ou filtro'
                   : 'Comece adicionando itens à sua lista'}
               </p>
               {!search && filterCategory === 'all' && (
@@ -265,8 +266,8 @@ export default function ShoppingList() {
                         key={item.id}
                         className={cn(
                           "flex items-center gap-4 p-3 rounded-lg border transition-all",
-                          item.purchased 
-                            ? "bg-success/5 border-success/20" 
+                          item.purchased
+                            ? "bg-success/5 border-success/20"
                             : "bg-card border-border hover:border-primary/30"
                         )}
                       >
@@ -332,8 +333,8 @@ export default function ShoppingList() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Categoria</label>
-                <Select 
-                  value={formData.category} 
+                <Select
+                  value={formData.category}
                   onValueChange={(v) => setFormData({ ...formData, category: v as ShoppingItem['category'] })}
                 >
                   <SelectTrigger>
@@ -360,8 +361,8 @@ export default function ShoppingList() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Unidade</label>
-                  <Select 
-                    value={formData.unit} 
+                  <Select
+                    value={formData.unit}
                     onValueChange={(v) => setFormData({ ...formData, unit: v })}
                   >
                     <SelectTrigger>

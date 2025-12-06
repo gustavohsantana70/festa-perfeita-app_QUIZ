@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { 
+import {
   Wallet,
   TrendingUp,
   TrendingDown,
@@ -34,7 +34,7 @@ export default function Budget() {
   const [newBudget, setNewBudget] = useState(user?.totalBudget?.toString() || '');
   const [categoryBudget, setCategoryBudget] = useState({ planned: '', spent: '' });
 
-  const partyTypeColor = user?.partyType === 'natal' ? 'christmas' : 'reveillon';
+
 
   const totalPlanned = budgetCategories.reduce((sum, cat) => sum + cat.planned, 0);
   const totalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent, 0);
@@ -98,7 +98,7 @@ export default function Budget() {
               Controle seus gastos e mantenha-se no orçamento
             </p>
           </div>
-          <Button 
+          <Button
             variant="outline"
             onClick={() => {
               setNewBudget(user?.totalBudget?.toString() || '');
@@ -140,11 +140,11 @@ export default function Budget() {
                     {formatCurrency(totalSpent)} ({Math.round(percentUsed)}%)
                   </span>
                 </div>
-                <Progress 
-                  value={Math.min(percentUsed, 100)} 
+                <Progress
+                  value={Math.min(percentUsed, 100)}
                   className={cn("h-4", isOverBudget && "[&>div]:bg-destructive")}
                 />
-                
+
                 {isOverBudget && (
                   <div className="flex items-center gap-2 p-3 bg-destructive/10 rounded-lg text-destructive">
                     <AlertTriangle className="w-5 h-5 shrink-0" />
@@ -215,7 +215,7 @@ export default function Budget() {
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value: number) => formatCurrency(value)}
                     />
                     <Legend />
@@ -242,12 +242,12 @@ export default function Budget() {
                 {budgetCategories.map((cat, index) => {
                   const percentage = cat.planned > 0 ? (cat.spent / cat.planned) * 100 : 0;
                   const isOver = cat.spent > cat.planned && cat.planned > 0;
-                  
+
                   return (
                     <div key={cat.category} className="space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div 
+                          <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: COLORS[index % COLORS.length] }}
                           />
@@ -272,8 +272,8 @@ export default function Budget() {
                           {Math.round(percentage)}%
                         </span>
                       </div>
-                      <Progress 
-                        value={Math.min(percentage, 100)} 
+                      <Progress
+                        value={Math.min(percentage, 100)}
                         className={cn("h-2", isOver && "[&>div]:bg-destructive")}
                       />
                     </div>
